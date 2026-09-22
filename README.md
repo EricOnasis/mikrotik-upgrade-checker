@@ -25,8 +25,26 @@ core                  7.15.3       up to date
 
 Exits `1` if any router is outdated or unreachable, `0` if the whole fleet is current.
 
-Auto-detecting the latest version from MikroTik's own update-check endpoint is coming soon — for
-now, pass it manually with `--latest`.
+### Auto-detecting the latest version
+
+```sh
+python checker.py inventory.json --auto-latest
+python checker.py inventory.json --auto-latest --channel long-term
+```
+
+This queries the same endpoint RouterOS itself uses for its "Check For Updates" button
+(`upgrade.mikrotik.com`). It isn't an officially documented public API, so treat it as best-effort:
+if it's ever unreachable or its response format changes, the tool reports that clearly and you can
+fall back to `--latest X.Y.Z` with a version you looked up manually.
+
+## Running the tests
+
+```sh
+python -m unittest discover -s tests
+```
+
+Tests mock both the SSH layer and the HTTP fetch, so they run without any real routers or network
+access.
 
 ## License
 
